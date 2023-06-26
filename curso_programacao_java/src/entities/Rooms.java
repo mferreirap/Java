@@ -29,7 +29,18 @@ public class Rooms {
 
 	@Override
 	public String toString() {
-		return "Rooms [number=" + number + ", empty=" + empty + ", getEmpty()=" + getEmpty() + "]";
+		return "Rooms [number=" + number + ", empty=" + empty + "]" + "\n";
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		return true;
 	}
 
 }

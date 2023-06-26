@@ -1,5 +1,9 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 import entities.Person;
@@ -11,50 +15,61 @@ public class Motel {
 
 		Scanner sc = new Scanner(System.in);
 
-		// fazer validação entre 1 e 10 estudantes
-
 		int numberOfRooms = 10;
-		Rooms[] rooms = new Rooms[numberOfRooms];
-		for (int i = 0; i < rooms.length; i++) {
+
+		ArrayList<Rooms> rooms = new ArrayList<Rooms>(numberOfRooms);
+		for (int i = 0; i < numberOfRooms; i++) {
 			int numberRoom = i + 1;
 			char empty = 'Y';
-			rooms[i] = new Rooms(numberRoom, empty);
-
+			rooms.add(new Rooms(numberRoom, empty));
 		}
 
 		System.out.println("Please, inform the number of students: ");
 
 		int n = sc.nextInt();
-		// if (n > 0 && n <= 10) {
 
-		Person[] student = new Person[n];
+		// Person[] student = new Person[n];
 
-		for (int i = 0; i < student.length; i++) {
+		ArrayList<Person> student = new ArrayList<Person>(n);
+
+		for (int i = 0; i < n; i++) {
 			System.out.println("Declare the name of student: ");
-			String name = sc.nextLine();
 			sc.nextLine();
+			String name = sc.nextLine();
 			String email = name + "@hotmail.com";
 			System.out.println("Declare the room of student: ");
 			int roomChoice = sc.nextInt();
-			/*
-			 * for (int j = 0; j < rooms.length; j++) { if (roomChoice ==
-			 * rooms[j].getNumber() && rooms[j].getEmpty() == 'Y') { rooms[j].setEmpty('N');
-			 * System.out.println("Student allocated."); } else {
-			 * System.out.println("The room is not empty, please select another one: ");
-			 * roomChoice = sc.nextInt(); }
-			 */
-			student[i] = new Person(name, email, roomChoice);
+			if (roomChoice <= 0 || roomChoice > numberOfRooms) {
+				System.out.println("Please, take a valid room (1-10)");
+			} else {
+				if (rooms.contains(roomChoice) && rooms.get(roomChoice).getEmpty() == 'Y') {
+					rooms.get(roomChoice).setEmpty('N');
+				} else {
+					while (rooms.contains(roomChoice) && rooms.get(roomChoice).getEmpty() == 'N') {
+						System.out.println("Please, take a empty room");
+						roomChoice = sc.nextInt();
+					}
+					rooms.get(roomChoice).setEmpty('N');
+				}
+
+				student.add(new Person(name, email, roomChoice));
+			}
+
+			Collections.sort(student, Comparator.comparing(Person::getRoomChoice));
 
 		}
+		
+		System.out.println();
 
-		// }
-		// }
-
-		System.out.println(rooms.toString());
-		System.out.println(student.toString());
+		System.out.println("Busy rooms:");
+		for (int i = 0; i < n; i++) {
+			if (student.isEmpty() == false) {
+				System.out.println(student.get(i).getRoomChoice() + ": " + student.get(i).getName() + ", "
+						+ student.get(i).getStudentEmail());
+			}
+		}
 
 		sc.close();
-
 	}
 
 }

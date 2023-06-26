@@ -45,7 +45,11 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [name=" + name + ", studentEmail=" + studentEmail + ", roomChoice=" + roomChoice + "]";
+		return roomChoice + ": " + name + ", " + studentEmail + "\n";
 	}
 
+//	@Override
+	//public int compareTo(Person anotherPerson) {
+		//return this.roomChoice.compareTo(anotherPerson.getRoomChoice());
+	//}
 }
